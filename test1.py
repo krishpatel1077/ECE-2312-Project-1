@@ -14,7 +14,7 @@ duration = float(input("Enter the duration of recording (in seconds): "))
 Mono_Stereo = int(input("Mono =1 | Stereo =2: "))
 
 # Start audio recording
-recording = sd.rec(int(duration*sr), samplerate=sr, channels=1)
+recording = sd.rec(int(duration*sr), samplerate=sr, channels=Mono_Stereo)
 # Record with a mono or stereo channel microphone
 # Record audio for the given duration
 print("Recording...............")
