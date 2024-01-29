@@ -14,12 +14,13 @@ duration = float(input("Enter the duration of recording (in seconds): "))
 Mono_Stereo = int(input("Mono =1 | Stereo =2: "))
 
 # Start audio recording
-recording = sd.rec(int(duration*sr), samplerate=sr, channels=Mono_Stereo)
+recording = sd.rec(int(duration*sr), samplerate=sr, channels=1)
 # Record with a mono or stereo channel microphone
 # Record audio for the given duration
 print("Recording...............")
 sd.wait()
 # Write it to a file
+
 if Mono_Stereo == 1:
     write(f"{filename}_MONO.wav", sr, recording)
 elif Mono_Stereo == 2:
@@ -27,7 +28,8 @@ elif Mono_Stereo == 2:
 
 # Plot the recorded audio
 plt.figure(figsize=(14, 5))
-librosa.display.waveshow(np.array(recording[:, 0]), sr=sr)
+
+librosa.display.waveshow(np.array(recording[:, 0]), sr=sr, color="blue")
 plt.title('Recorded Audio')
 plt.xlabel('Time (s)')
 plt.ylabel('Amplitude')
