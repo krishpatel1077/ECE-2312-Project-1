@@ -11,15 +11,19 @@ sr = 44100
 # Get user input for filename and duration
 filename = input("Enter the filename (without extension): ")
 duration = float(input("Enter the duration of recording (in seconds): "))
+Mono_Stereo = int(input("Mono =1 | Stereo =2: "))
 
 # Start audio recording
-recording = sd.rec(int(duration*sr), samplerate=sr, channels=2)
+recording = sd.rec(int(duration*sr), samplerate=sr, channels=Mono_Stereo)
 # Record with a mono or stereo channel microphone
 # Record audio for the given duration
 print("Recording...............")
 sd.wait()
 # Write it to a file
-write(f"{filename}.wav", sr, recording)
+if Mono_Stereo == 1:
+    write(f"{filename}_MONO.wav", sr, recording)
+elif Mono_Stereo == 2:
+    write(f"{filename}_STEREO.wav", sr, recording)
 
 # Plot the recorded audio
 plt.figure(figsize=(14, 5))
@@ -29,7 +33,10 @@ plt.xlabel('Time (s)')
 plt.ylabel('Amplitude')
 
 # Save the plot as an image
-plt.savefig(f"{filename}_soundwave.png")
+if Mono_Stereo == 1:
+    plt.savefig(f"{filename}_soundwave_MONO.png")
+elif Mono_Stereo == 2:
+    plt.savefig(f"{filename}_soundwave_STEREO.png")
 
 # Show the plot
 plt.show()
