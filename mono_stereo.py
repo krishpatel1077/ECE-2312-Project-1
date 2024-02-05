@@ -29,6 +29,23 @@ def shift_right_channel(input_array, time_ms):
     transposed_stereo_out = np.array([shifted_array_channel_l,shifted_array_channel_r]).T
     return transposed_stereo_out
 
+def attenuate_right_channel(input_array, db_amount):
+    #set up a case statement for each attenuation factor
+    factor = 0
+    if (db_amount == -3):
+        factor = 0.5
+    if (db_amount == -6):
+        factor = 0.25
+    if (db_amount == -1.5):
+        factor = 0.75
+    
+    factor_array = input_array * factor
+    #create stereo array
+    stereo_array = np.array([y,factor_array])
+    #transpose array to be vertical
+    stereo_out = np.transpose(stereo_array)
+    return  shift_right_channel(stereo_out, 0)
+    
 #delay right channel by average head
 
 #delay right channel by 1ms, 10ms, and 100ms
