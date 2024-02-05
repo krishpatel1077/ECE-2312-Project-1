@@ -32,19 +32,21 @@ def shift_right_channel(input_array, time_ms):
 def attenuate_right_channel(input_array, db_amount):
     #set up a case statement for each attenuation factor
     factor = 0
-    if (db_amount == -3):
+    if (db_amount == '-3'):
         factor = 0.5
-    if (db_amount == -6):
+    elif (db_amount == '-6'):
         factor = 0.25
-    if (db_amount == -1.5):
+    elif (db_amount == '-1.5'):
         factor = 0.75
+    else:
+        print("ERROR")
     
     factor_array = input_array * factor
-    #create stereo array
+    #create array
     stereo_array = np.array([y,factor_array])
     #transpose array to be vertical
     stereo_out = np.transpose(stereo_array)
-    return  shift_right_channel(stereo_out, 0)
+    return  stereo_out
     
 #delay right channel by average head
 
@@ -58,10 +60,23 @@ shift_10ms = shift_right_channel(y,10)
 #100ms
 shift_100ms = shift_right_channel(y,100)
 
+#Attenuate 0ms stereo by -1.5, -3, -6db
+#-1.5db
+shift_1_5db = attenuate_right_channel(y,'-1.5')
+
+#10ms
+shift_3_db = attenuate_right_channel(y,'-3')
+
+#100ms
+shift_6_db = attenuate_right_channel(y,'-6')
 
 #Save all to a wav file
 write(f"{filename}_STEREO_CONVERT.wav", sr, stereo_out)
 write("team-stereosoundfile-1ms.wav", sr, shift_1ms)
 write("team-stereosoundfile-10ms.wav", sr, shift_10ms)
 write("team-stereosoundfile-100ms.wav", sr, shift_100ms)
+
+write("team-stereosoundfile-1ms-1_5db.wav", sr, shift_1_5db)
+write("team-stereosoundfile-10ms-3_db.wav", sr, shift_3_db)
+write("team-stereosoundfile-100ms-6_db.wav", sr, shift_6_db)
 
