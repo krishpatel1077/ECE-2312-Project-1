@@ -15,6 +15,18 @@ stereo_array = np.array([y,y])
 #transpose array to be vertical
 stereo_out = np.transpose(stereo_array)
 
+#measurements in m (delay)
+m_kyle = .30
+m_krish = .30
+m_ana = .29
+
+#delays calculated (s)
+speed_sound = 343
+delay_kyle = m_kyle/speed_sound;
+delay_krish = m_krish/speed_sound;
+delay_ana = m_ana/speed_sound;
+
+avg_delay = (delay_ana + delay_kyle + delay_krish)/3;
 #function to delay right channel by x number of ms
 
 def shift_right_channel(input_array, time_ms):
@@ -70,6 +82,7 @@ shift_3_db = attenuate_right_channel(y,'-3')
 #100ms
 shift_6_db = attenuate_right_channel(y,'-6')
 
+
 #Save all to a wav file
 write(f"{filename}_STEREO_CONVERT.wav", sr, stereo_out)
 write("team-stereosoundfile-1ms.wav", sr, shift_1ms)
@@ -80,3 +93,6 @@ write("team-stereosoundfile-1ms-1_5db.wav", sr, shift_1_5db)
 write("team-stereosoundfile-10ms-3_db.wav", sr, shift_3_db)
 write("team-stereosoundfile-100ms-6_db.wav", sr, shift_6_db)
 
+#team member delay version
+shift_avg_delay = shift_right_channel(y, avg_delay)
+write("team-ear-measurements-avg-delay.wav", sr, shift_avg_delay)
