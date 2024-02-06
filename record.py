@@ -43,5 +43,3 @@ elif Mono_Stereo == 2:
 # Show the plot
 plt.show()
 
-# Play the recorded audio
-ipd.Audio(f"{filename}.wav")
