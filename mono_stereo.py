@@ -16,9 +16,9 @@ stereo_array = np.array([y,y])
 stereo_out = np.transpose(stereo_array)
 
 #measurements in m (delay)
-m_kyle = .30
-m_krish = .30
-m_ana = .29
+m_kyle = 0.095493
+m_krish = 0.095493
+m_ana = 0.0923099
 
 #delays calculated (s)
 speed_sound = 343
