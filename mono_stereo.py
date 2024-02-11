@@ -42,7 +42,7 @@ def shift_right_channel(input_array, time_ms):
     transposed_stereo_out = np.transpose(stereo_out_notranspose)
     return transposed_stereo_out, stereo_out_notranspose
 
-def attenuate_right_channel(input_array, db_amount):
+def attenuate_right_channel(input_array, db_amount, mono_stereo):
     #set up a case statement for each attenuation factor
     factor = 0
     if (db_amount == '-3'):
@@ -54,11 +54,20 @@ def attenuate_right_channel(input_array, db_amount):
     else:
         print("ERROR")
     
-    factor_array = input_array * factor
-    #create array
-    stereo_array = np.array([input_array,factor_array])
-    #transpose array to be vertical
-    stereo_out = np.transpose(stereo_array)
+    #if its in mono mode
+    if mono_stereo == 1:
+        factor_array = input_array * factor
+        #create array
+        stereo_array = np.array([input_array,factor_array])
+        #transpose array to be vertical
+        stereo_out = np.transpose(stereo_array)    
+    elif mono_stereo ==0:
+        factor_array = input_array[1] * factor
+        #create array
+        stereo_array = np.array([input_array[0],factor_array])
+        #transpose array to be vertical
+        stereo_out = np.transpose(stereo_array)
+    
     return  stereo_out  
     
 #delay right channel by average head
@@ -76,23 +85,23 @@ shift_100ms = shift_right_channel(y,100)
 
 #Attenuate 0ms stereo by -1.5, -3, -6db
 #-1.5db
-shift_1_5db = attenuate_right_channel(y,'-1.5')
+shift_1_5db = attenuate_right_channel(y,'-1.5', 1)
 
 #10ms
-shift_3_db = attenuate_right_channel(y,'-3')
+shift_3_db = attenuate_right_channel(y,'-3', 1)
 
 #100ms
-shift_6_db = attenuate_right_channel(y,'-6')
+shift_6_db = attenuate_right_channel(y,'-6', 1)
 
 #Attenuate averagedelay stereo by -1.5, -3, -6db
 #-1.5db
-shift_avgdelay_1_5db = attenuate_right_channel(avg_array_untransposed,'-1.5')
+shift_avgdelay_1_5db = attenuate_right_channel(avg_array_untransposed,'-1.5', 0)
 
 #10ms
-shift_avgdelay_3_db = attenuate_right_channel(avg_array_untransposed,'-3')
+shift_avgdelay_3_db = attenuate_right_channel(avg_array_untransposed,'-3', 0)
 
 #100ms
-shift_avgdelay_6_db = attenuate_right_channel(avg_array_untransposed,'-6')
+shift_avgdelay_6_db = attenuate_right_channel(avg_array_untransposed,'-6',0)
 
 
 #Save all to a wav file
@@ -101,9 +110,9 @@ write("team-stereosoundfile-1ms.wav", sr, shift_1ms[0])
 write("team-stereosoundfile-10ms.wav", sr, shift_10ms[0])
 write("team-stereosoundfile-100ms.wav", sr, shift_100ms[0])
 
-write("team-stereosoundfile-0ms-1_5db.wav", sr, shift_1_5db[0])
-write("team-stereosoundfile-0ms-3_db.wav", sr, shift_3_db[0])
-write("team-stereosoundfile-0ms-6_db.wav", sr, shift_6_db[0])
+write("team-stereosoundfile-0ms-1_5db.wav", sr, shift_1_5db)
+write("team-stereosoundfile-0ms-3_db.wav", sr, shift_3_db)
+write("team-stereosoundfile-0ms-6_db.wav", sr, shift_6_db)
 
 #team member delay version
 write("team-ear-measurements-avg-delay.wav", sr, shift_avg_delay)
