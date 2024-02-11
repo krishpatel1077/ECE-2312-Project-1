@@ -61,6 +61,8 @@ def attenuate_right_channel(input_array, db_amount, mono_stereo):
         stereo_array = np.array([input_array,factor_array])
         #transpose array to be vertical
         stereo_out = np.transpose(stereo_array)    
+    
+    #if input array is stereo, only take the right channel to attenuate and leave the left untouched
     elif mono_stereo ==0:
         factor_array = input_array[1] * factor
         #create array
